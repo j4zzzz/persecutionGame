@@ -4,7 +4,8 @@
 #include <queue>
 #include <cmath>
 #include <map>
-#include <string>
+#include <cstdlib>
+#include <ctime>  
 
 using namespace std;
 
@@ -30,8 +31,8 @@ public:
         else if (direcc == "D" && j < n - 1) j++;
 
         if (Mat[i][j] == 'h') return;
-        if (Mat[i][j] == 'O') Mat[i][j] = '-';
-        else if (Mat[i][j] == '-') Mat[i][j] = 'O';
+        //if (Mat[i][j] == 'O') Mat[i][j] = '-';
+        //else if (Mat[i][j] == '-') Mat[i][j] = 'O';
     }
 };
 
@@ -129,7 +130,7 @@ pair<int, int> A_estrella(Mapa &mapa, int sx, int sy, int dx, int dy) {
         for (auto &[dx, dy] : vecinos) {
             int nx = actual->x + dx, ny = actual->y + dy;
             if (dentro(nx, ny) && !visitado[nx][ny] && mapa.Mat[nx][ny] != 'h') {
-                int costo = (mapa.Mat[nx][ny] == 'O') ? 2 : 1;
+                int costo = 1;//(mapa.Mat[nx][ny] == 'O') ? 2 : 1;
                 Nodo *nuevo = new Nodo{nx, ny, actual->g + costo, heuristica(nx, ny, dx, dy), actual};
                 pq.push({nuevo->f(), nuevo});
             }
@@ -137,10 +138,59 @@ pair<int, int> A_estrella(Mapa &mapa, int sx, int sy, int dx, int dy) {
     }
     return {sx, sy};
 }
+vector<vector<char>> getMatriz()
+{
+    vector<vector<vector<char>>> matMats;
 
-// Crear el mapa
-void crearMapa(sf::RenderWindow &ventana, int size) {
-    vector<vector<char>> matriz = {
+    vector<vector<char>> matriz1 = {
+        {'h','h','h','h','h','h','h','h','h','h','h','h'},
+        {'h','-','-','-','-','h','-','-','-','-','-','h'},
+        {'h','-','-','-','-','h','-','h','h','h','-','h'},
+        {'h','-','-','h','-','h','-','h','h','h','-','h'},
+        {'h','h','h','h','-','h','-','h','-','h','-','h'},
+        {'h','-','-','h','-','h','-','h','-','h','-','h'},
+        {'h','-','-','h','-','-','-','h','-','h','-','h'},
+        {'h','-','-','h','-','-','-','h','-','h','-','h'},
+        {'h','-','-','h','-','h','-','h','-','h','-','h'},
+        {'h','-','-','h','-','-','-','h','-','h','-','h'},
+        {'h','-','-','h','-','-','-','-','-','-','-','h'},
+        {'h','h','h','h','h','h','h','h','h','h','h','h'},
+    };
+    matMats.push_back(matriz1);
+
+    vector<vector<char>> matriz2 = {
+        {'h','h','h','h','h','h','h','h','h','h','h','h'},
+        {'h','-','-','-','h','h','-','-','-','-','-','h'},
+        {'h','-','h','-','h','h','-','-','-','-','-','h'},
+        {'h','-','h','-','h','h','-','h','h','-','-','h'},
+        {'h','-','h','-','h','h','-','h','-','-','-','h'},
+        {'h','-','h','-','h','h','-','h','-','-','-','h'},
+        {'h','-','-','-','h','h','-','h','-','-','-','h'},
+        {'h','-','h','-','h','-','-','h','-','-','-','h'},
+        {'h','-','h','-','-','h','-','h','-','-','-','h'},
+        {'h','-','h','h','-','-','-','-','-','-','-','h'},
+        {'h','-','-','h','-','-','-','-','-','-','-','h'},
+        {'h','h','h','h','h','h','h','h','h','h','h','h'},
+    };
+    matMats.push_back(matriz2);
+
+    vector<vector<char>> matriz3 = {
+        {'h','h','h','h','h','h','h','h','h','h','h','h'},
+        {'h','-','-','-','-','-','-','-','-','-','-','h'},
+        {'h','-','-','-','-','h','-','-','-','-','-','h'},
+        {'h','-','-','h','-','h','-','h','h','h','-','h'},
+        {'h','-','-','h','-','h','-','h','-','-','-','h'},
+        {'h','-','-','h','-','h','-','h','-','h','-','h'},
+        {'h','-','-','h','-','h','-','h','-','h','-','h'},
+        {'h','-','-','h','-','h','-','h','-','h','-','h'},
+        {'h','h','-','h','-','h','-','h','-','-','-','h'},
+        {'h','-','-','h','-','h','-','-','-','-','-','h'},
+        {'h','-','h','h','-','-','-','-','-','-','-','h'},
+        {'h','h','h','h','h','h','h','h','h','h','h','h'},
+    };
+    matMats.push_back(matriz3);
+
+    vector<vector<char>> matriz4 = {
         {'h','h','h','h','h','h','h','h','h','h','h','h'},
         {'h','-','-','-','-','h','-','-','-','-','-','h'},
         {'h','-','-','-','-','h','-','-','-','-','-','h'},
@@ -150,10 +200,21 @@ void crearMapa(sf::RenderWindow &ventana, int size) {
         {'h','-','-','h','-','-','-','h','-','-','-','h'},
         {'h','-','-','h','-','-','-','h','-','-','-','h'},
         {'h','-','-','h','-','h','-','h','-','-','-','h'},
-        {'h','-','-','h','-','-','-','-','-','-','-','h'},
-        {'h','-','-','h','-','-','-','-','-','-','-','h'},
+        {'h','-','-','h','-','-','-','h','-','h','h','h'},
+        {'h','-','h','h','-','-','-','h','-','-','-','h'},
         {'h','h','h','h','h','h','h','h','h','h','h','h'},
     };
+    matMats.push_back(matriz4);
+
+    //srand(time(0)); // inicializar semilla aleatoria (solo una vez por ejecución)
+    int number = rand() % matMats.size(); // número aleatorio entre 0 y tamaño - 1
+    //cout << "Seleccionando matriz #" << number << endl;
+    return matMats[number];
+}
+
+// Crear el mapa
+void crearMapa(sf::RenderWindow &ventana, int size) {
+    vector<vector<char>> matriz = getMatriz();
 
     Mapa mapa(N, size, matriz);
     Jugador jugador(CELL, CELL, size, N, CELL);
@@ -195,7 +256,7 @@ void crearMapa(sf::RenderWindow &ventana, int size) {
         }
 
         tiempo += reloj.restart().asSeconds();
-        if (tiempo >= 1.0f) {
+        if (tiempo >= 0.25f) {
             tiempo = 0;
             auto [nx, ny] = A_estrella(mapa, villano.y / CELL, villano.x / CELL, jugador.y / CELL, jugador.x / CELL);
             villano.x = ny * CELL;
